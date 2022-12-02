@@ -2,7 +2,7 @@
   "name": "just-retry-it",
   "version": "0.1.0",
   "description": "Retries with error handler",
-  "main": "dist/index.js",
+  "main": "dist/retry.js",
   "directories": {
     "test": "test"
   },
