@@ -35,15 +35,17 @@ async function getMessage() {
     throw new Error("boom");
 }
 
-// Retry without the error handler.
-const msg1 = await retry(getMessage, undefined, { retries: 5 });
-
-async function handle(error) {
-    console.log("received an error", error);
+async function run() {
+    // Retry without the error handler.
+    const msg1 = await retry(getMessage, undefined, { retries: 5 });
+    
+    async function handle(error) {
+        console.log("received an error", error);
+    }
+    
+    // Retry with the error handler.
+    const msg2 = await retry(getMessage, handle, { retries: 5 });
 }
-
-// Retry with the error handler.
-const msg2 = await retry(getMessage, handle, { retries: 5 });
 ```
 
 ## License
