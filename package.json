@@ -1,6 +1,6 @@
 {
   "name": "just-retry-it",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Retries with error handler",
   "main": "dist/retry.js",
   "directories": {
