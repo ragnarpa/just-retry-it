@@ -16,11 +16,11 @@ $ npm install just-retry-it
 
 ## Usage
 ```
-await retry(operation, errorHandler, options?)
+await retry(operation, options?)
 ```
 - `operation`: The operation to be executed and retried if the execution should fail.
-- `errorHandler`: The error handler function, called right after the `operation` if the latter throws. Will receive the thrown error as the input. In case the error handler is not provided (left `undefined`) this argument is ignored.
 - `options`: The options object as it is desrcibed in the [retry](https://www.npmjs.com/package/retry) NPM package.
+  - `options` also supports the `errorHandler` property (optional) to pass an error handler function, which will be called right after the `operation` if it throws. The handler receives the thrown error as the input. 
 
 ## Example
 
