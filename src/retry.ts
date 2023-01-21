@@ -1,22 +1,25 @@
-import { default as promiseRetry } from 'promise-retry';
-import { OperationOptions } from 'retry';
+import { default as promiseRetry } from "promise-retry";
+import { OperationOptions } from "retry";
+
+export type RetryOptions<T> = OperationOptions & {
+  errorHandler?: ((error: unknown) => Promise<T | void>) | void;
+};
 
 export default async function retry<T>(
-	op: () => Promise<T>,
-	errorHandler: ((error: unknown) => Promise<T | void>) | void,
-	opts?: OperationOptions,
+  op: () => Promise<T>,
+  opts?: RetryOptions<T>
 ): Promise<T> {
-	const retryable = async (retry: (e: Error) => never): Promise<T> => {
-		try {
-			return await op();
-		} catch (error) {
-			if (typeof errorHandler === 'function') {
-				await errorHandler(error);
-			}
+  const retryable = async (retry: (e: Error) => never): Promise<T> => {
+    try {
+      return await op();
+    } catch (error) {
+      if (typeof opts?.errorHandler === "function") {
+        await opts.errorHandler(error);
+      }
 
-			retry(error as Error);
-		}
-	};
+      retry(error as Error);
+    }
+  };
 
-	return promiseRetry(retryable, opts);
+  return promiseRetry(retryable, opts);
 }

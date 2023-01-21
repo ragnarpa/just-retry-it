@@ -7,7 +7,7 @@ describe("retry", () => {
       .mockRejectedValueOnce(new Error("boom"))
       .mockResolvedValue("ok");
 
-    const result = await retry(op, undefined, { retries: 2 });
+    const result = await retry(op, { retries: 2 });
 
     expect(op).toHaveBeenCalledTimes(2);
     expect(result).toEqual("ok");
@@ -20,7 +20,7 @@ describe("retry", () => {
       .mockResolvedValue("ok");
     const errorHandler = jest.fn().mockImplementation(() => Promise.resolve());
 
-    const result = await retry(op, errorHandler, { retries: 2 });
+    const result = await retry(op, { retries: 2, errorHandler });
 
     expect(errorHandler).toHaveBeenCalledTimes(1);
   });
@@ -28,8 +28,6 @@ describe("retry", () => {
   it("should throw if attempts are exhausted", async () => {
     const op = jest.fn().mockRejectedValue(new Error("boom"));
 
-    await expect(() => retry(op, undefined, { retries: 2 })).rejects.toThrow(
-      "boom"
-    );
+    await expect(() => retry(op, { retries: 2 })).rejects.toThrow("boom");
   });
 });
